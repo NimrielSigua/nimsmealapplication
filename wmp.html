@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Meal Application</title>
+    <script src="stylescript/tailwind.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.1/axios.js"></script>
+    <script src="js/adddailymeal.js" defer></script>
+    <script src="js/dailymodal.js" defer></script>
+    <script src="stylescript/script.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- <script src="js/users.js"></script> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Concert+One&family=Passion+One&family=Playfair+Display:wght@500&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Croissant+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
+    <script src="js/axios.js"></script>
+
+    <style>
+        .custom-scrollbar-x::-webkit-scrollbar {
+            height: 5px;
+            display: none;
+        }
+
+        .custom-scrollbar-x::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+            display: none;
+
+        }
+
+        .custom-scrollbar-x::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 5px;
+            display: none;
+
+        }
+
+        .custom-scrollbar-x::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+            display: none;
+
+        }
+
+        .navigation a.active {
+            color: #7cc2ff;
+            transform: none;
+        }
+    </style>
+    <script>
+        const onLoad = () => {
+            document.getElementById("name").innerText = sessionStorage.getItem("fullname");
+            document.getElementById("user_id").value = sessionStorage.getItem("user_id");
+        }
+    </script>
+</head>
+
+<body onload="onLoad()" class="bg-sky-700">
+    <nav id="navbar" class="bg-sky-100 p-2 fixed top-0 w-full z-50 shadow-md">
+        <div class="flex navigation">
+            <img src="img/logo2.png" class="rounded-[100%] hover:animate-bounce" width="50px" alt="logo">
+            <p style="font-family: 'Croissant One', cursive;" class="text-xl ml-2 mt-3">Nims Weekly Meal</p>
+            <div class="flex justify-center items-center gap-4 ml-[4rem]">
+                <a href="index.html" class="text-sky-900 hover:scale-90">Home</a>
+                <a href="wmp.html" class="text-sky-900 hover:scale-90">Weekly Meal Plan</a>
+                <a href="recipe.html" class="text-sky-900 hover:scale-90">Recipe</a>
+                <div class="text-sky-900 hover:scale-90 hover:text-red-500 ml-[50rem]">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <a href="login.html" id="logout">logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <nav id="sidebar" class="p-4 fixed w-screen bg-sky-50 bg-opacity-90 shadow-lg">
+            <div class="w-full flex justify-end content-end">
+                <button id="closesidebar" class="flex justify-end items-end">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex items-center mb-4">
+                <img src="img/logo2.png" class="rounded-full h-12 w-12 hover:animate-bounce" alt="logo">
+                <p class="text-xl ml-2 mt-3 font-croissant">Nims weekly meal</p>
+            </div>
+            <ul>
+                <li class="mb-2">
+                    <a href="index.html" class="text-sky-900 hover:scale-90 block p-2">Home</a>
+                </li>
+                <li class="mb-2">
+                    <a href="wmp.html" class="text-sky-900 hover:scale-90 block p-2">Weekly Meal Plan</a>
+                </li>
+                <li class="mb-2">
+                    <a href="recipe.html" class="text-sky-900 hover:scale-90 block p-2">Recipe</a>
+                </li>
+            </ul>
+            <div class="mt-4">
+                <a href="login.html" id="logout" class="text-sky-900 hover:scale-90 hover:text-red-500 block p-2">
+                    <i class="fa-solid fa-right-to-bracket inline-block mr-2"></i>
+                    Logout
+                </a>
+            </div>
+        </nav>
+        <div class="flex">
+            <button id="menubutton" class="p-3 ">
+                <i class="fa-solid fa-bars text-3xl"></i>
+            </button>
+            <h1 class="mt-3 text-2xl font-bold">Weekly Meal Plan</h1>
+        </div>
+    </div>
+
+    <div id="backopacity" class="min-h-screen p-6">
+
+        <div class="mt-14">
+            <h2 id="name" class="font-[300] uppercase ml-11 text-2xl" style="font-family: 'Titan One', cursive;
+            "></h2>
+        </div>
+        <div class="space-x-4 flex justify-center mt-9">
+            <button id="addweeklyBtn"
+                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded hover:scale-105">
+                Weekly Meal
+            </button>
+            <button id="addailyplan"
+                class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded hover:scale-105 hidden">
+                Add Daily Plan
+            </button>
+        </div>
+
+        <!-- daily plan table -->
+        <section id="opacolor" class="py-10 mt-9 p-4">
+
+            <h2 class="flex text-3xl font-semibold justify-center mt-[-4rem] p-2 rounded-t-lg"
+                style="font-family:Abril Fatface;">MEAL PLANS</h2>
+            <div class=" flex gap-3" id="weekBtn">
+
+            </div>
+            <div
+                class="max-w-32 flex gap-5 overflow-x-scroll p-1 rounded-lg custom-scrollbar-x bg-sky-50 bg-opacity-70 rounded-br-md rounded-bl-md">
+                <div id="dailyplan" class="p-3 text-center gap-4 rounded-lg max-w-[30rem] w-full flex">
+
+                </div>
+                <!-- <div class="hidden" id="shoppingContainer">
+                </div>
+                <div class="hidden" id="guideContainer">
+                </div> -->
+            </div>
+        </section>
+    </div>
+
+
+    
+
+
+
+
+
+
+    <!-- modal for Weekly -->
+    <div id="myWeeklyModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden">
+        <div class="justify-center h-screen flex items-center content-center">
+            <div id="modalresponsive" class="flex items-center justify-center w-full h-full">
+                <div class="bg-sky-800 p-5 border  border-2 border-sky-500 rounded-lg shadow-lg">
+                    <!-- Form Content -->
+                    <h2 class="text-xl font-semibold mb-2 text-center text-sky-50">Create Weekly Meal Plan</h2>
+                    <hr>
+                    <div>
+                        <input type="text" name="user_id" id="user_id" class="hidden">
+                        <div class=" mb-2 mt-3">
+                            <div class="flex gap-3">
+                                <label for="startDate" class="mt-3 font-bold text-sky-50">Enter a date:</label>
+                                <input type="date" class="w-15 mt-1 p-2 border rounded" id="startDate" 
+                                    onchange="calculateLastDayOfWeek()">
+                            </div>
+                            <div class="flex gap-3">
+                                <label for="lastDayOfWeek" class="mt-3 font-bold text-sky-50">Last day of the
+                                    week:</label>
+                                <input type="text" class="w-15 mt-1 p-2 border rounded" id="lastDayOfWeek" readonly>
+                            </div>
+                        </div>
+                        <div class="">
+                            <!-- Hidden -->
+                            <div class="bg-sky-800 p-3 border border-orange-700 rounded-lg hidden" id="day0">
+                                <h1 class="text-center font-bold">day </h1>
+                                <div class="mb-4">
+                                    <label for="breakfast0"
+                                        class="block text-sm font-medium text-gray-700">Breakfast</label>
+                                    <div class="custom-select">
+                                        <select id="breakfast0" name="breakfast0"
+                                            class="border border-orange-300 w-full mt-1 p-2 border rounded">
+                                            <option value="11" disabled>Select Recipe</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lunch0" class="block text-sm font-medium text-gray-700">Lunch</label>
+                                    <div class="custom-select">
+                                        <select id="lunch0" name="lunch0"
+                                            class=" border border-orange-300 w-full mt-1 p-2 border rounded">
+                                            <option value="11" disabled>Select Recipe</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dinner1" class="block text-sm font-medium text-gray-700">Dinner</label>
+                                    <div class="custom-select">
+                                        <select id="dinner0" name="dinner0"
+                                            class="border border-orange-300 w-full mt-1 p-2 border rounded">
+                                            <option value="11" disabled>Select Recipe</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col justify-end mt-[1rem] absolute">
+                                    <button id="day0btn"
+                                        class="bg-blue-500 hover:bg-blue-600 flex ml-[17.3rem] w-fit text-white py-2 px-4 rounded">
+                                        Next->
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- day 1 -->
+                            <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg" id="day1">
+                                <h1 class="text-center font-bold">day 1</h1>
+                                <div class="mb-4">
+                                    <label for="breakfast1"
+                                        class="block text-sm font-medium text-gray-700">Breakfast</label>
+                                    <div class="custom-select">
+                                        <select id="breakfast1" name="breakfast1" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lunch1" class="block text-sm font-medium text-gray-700">Lunch</label>
+                                    <div class="custom-select">
+                                        <select id="lunch1" name="lunch1" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dinner1" class="block text-sm font-medium text-gray-700">Dinner</label>
+                                    <div class="custom-select">
+                                        <select id="dinner1" name="dinner1" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col justify-end mt-[1rem] absolute">
+                                    <button id="day2btn"
+                                        class="bg-blue-500 hover:bg-blue-600 flex ml-[17.3rem] w-fit text-white py-2 px-4 rounded">
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- day2 -->
+                            <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg" id="day2">
+                                <h1 class="text-center font-bold">day 2</h1>
+                                <div class="mb-4">
+                                    <label for="breakfast2"
+                                        class="block text-sm font-medium text-gray-700">Breakfast</label>
+                                    <div class="custom-select">
+                                        <select id="breakfast2" name="breakfast2" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lunch2" class="block text-sm font-medium text-gray-700">Lunch</label>
+                                    <div class="custom-select">
+                                        <select id="lunch2" name="lunch2" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dinner2" class="block text-sm font-medium text-gray-700">Dinner</label>
+                                    <div class="custom-select">
+                                        <select id="dinner2" name="dinner2" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[200px] ml-[-7px] mt-[1rem] absolute">
+                                    <button id="day1btn"
+                                        class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                        Back </button>
+                                            <button id="day3btn"
+                                                class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                                Next
+                                            </button>
+                                </div>
+                            </div>
+
+                            <!-- day3 -->
+                            <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg" id="day3">
+                                <h1 class="text-center font-bold">day 3</h1>
+                                <div class="mb-4">
+                                    <label for="breakfast3"
+                                        class="block text-sm font-medium text-gray-700">Breakfast</label>
+                                    <div class="custom-select">
+                                        <select id="breakfast3" name="breakfast3" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lunch3" class="block text-sm font-medium text-gray-700">Lunch</label>
+                                    <div class="custom-select">
+                                        <select id="lunch3" name="lunch3" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dinner3" class="block text-sm font-medium text-gray-700">Dinner</label>
+                                    <div class="custom-select">
+                                        <select id="dinner3" name="dinner3" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[200px] ml-[-7px] mt-[1rem] absolute">
+                                    <button id="day2backbtn"
+                                        class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                        Back </button>
+                                            <button id="day4btn"
+                                                class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                                Next
+                                            </button>
+                                </div>
+                            </div>
+
+                            <!-- day4 -->
+                            <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg" id="day4">
+                                <h1 class="text-center font-bold">day 4</h1>
+                                <div class="mb-4">
+                                    <label for="breakfast4"
+                                        class="block text-sm font-medium text-gray-700">Breakfast</label>
+                                    <div class="custom-select">
+                                        <select id="breakfast4" name="breakfast4" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lunch4" class="block text-sm font-medium text-gray-700">Lunch</label>
+                                    <div class="custom-select">
+                                        <select id="lunch4" name="lunch4" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dinner4" class="block text-sm font-medium text-gray-700">Dinner</label>
+                                    <div class="custom-select">
+                                        <select id="dinner4" name="dinner4" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[200px] ml-[-7px] mt-[1rem] absolute">
+                                    <button id="day3backbtn"
+                                        class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                        Back </button>
+                                            <button id="day5btn"
+                                                class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                                Next
+                                            </button>
+                                </div>
+                            </div>
+
+                            <!-- day5 -->
+                            <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg" id="day5">
+                                <h1 class="text-center font-bold">day 5</h1>
+                                <div class="mb-4">
+                                    <label for="breakfast5"
+                                        class="block text-sm font-medium text-gray-700">Breakfast</label>
+                                    <div class="custom-select">
+                                        <select id="breakfast5" name="breakfast5" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lunch5" class="block text-sm font-medium text-gray-700">Lunch</label>
+                                    <div class="custom-select">
+                                        <select id="lunch5" name="lunch5" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dinner5" class="block text-sm font-medium text-gray-700">Dinner</label>
+                                    <div class="custom-select">
+                                        <select id="dinner5" name="dinner5" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[200px] ml-[-7px] mt-[1rem] absolute">
+                                    <button id="day4backbtn"
+                                        class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                        Back </button>
+                                            <button id="day6btn"
+                                                class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                                Next
+                                            </button>
+                                </div>
+                            </div>
+
+                            <!-- day6 -->
+                            <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg" id="day6">
+                                <h1 class="text-center font-bold">day 6</h1>
+                                <div class="mb-4">
+                                    <label for="breakfast6"
+                                        class="block text-sm font-medium text-gray-700">Breakfast</label>
+                                    <div class="custom-select">
+                                        <select id="breakfast6" name="breakfast6" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lunch6" class="block text-sm font-medium text-gray-700">Lunch</label>
+                                    <div class="custom-select">
+                                        <select id="lunch6" name="lunch6" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dinner6" class="block text-sm font-medium text-gray-700">Dinner</label>
+                                    <div class="custom-select">
+                                        <select id="dinner6" name="dinner6" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[200px] ml-[-7px] mt-[1rem] absolute">
+                                    <button id="day5backbtn"
+                                        class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                        Back </button>
+                                            <button id="day7btn"
+                                                class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                                Next
+                                            </button>
+                                </div>
+                            </div>
+
+                            <!-- day7 -->
+                            <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg" id="day7">
+                                <h1 class="text-center font-bold">day 7</h1>
+                                <div class="mb-4">
+                                    <label for="breakfast7"
+                                        class="block text-sm font-medium text-gray-700">Breakfast</label>
+                                    <div class="custom-select">
+                                        <select id="breakfast7" name="breakfast7" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lunch7" class="block text-sm font-medium text-gray-700">Lunch</label>
+                                    <div class="custom-select">
+                                        <select id="lunch7" name="lunch7" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dinner7" class="block text-sm font-medium text-gray-700">Dinner</label>
+                                    <div class="custom-select">
+                                        <select id="dinner7" name="dinner7" required
+                                            class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                                            <option value="" disabled selected>--Select Recipe--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="flex gap-[200px] ml-[-7px] mt-[1rem] absolute">
+                                    <button id="day6backbtn"
+                                        class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                        Back </button>
+                                            <button id="saveWeeklyPlan"
+                                                class="bg-blue-500 hover:bg-blue-600 w-fit text-white py-2 px-4 rounded">
+                                                submit
+                                            </button>
+                                </div>
+                            </div>
+                            <button id="closeWeeklyModal"
+                                class="mt-14 ml-[18.8rem] bg-gray-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- success Modal -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden">
+        <div class="bg-sky-400 bg-opacity-90 border border-2 border-sky-300 p-4 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold mb-4">Success!</h2>
+            <hr>
+            <p class="mt-3 text-md">Weekly meal plan saved successfully.</p>
+            <div class="mt-4 flex justify-end">
+                <button id="closeSuccessModal"
+                    class="bg-sky-600 hover:bg-sky-700 shadow-xl border border-1 border-sky-300 text-white py-2 px-4 rounded">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="updatesuccessModal"
+        class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden">
+        <div class="bg-sky-400 bg-opacity-90 border border-2 border-sky-300 p-4 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold mb-4">Success!</h2>
+            <hr>
+            <p class="mt-3 text-md">Weekly meal plan saved successfully.</p>
+            <div class="mt-4 flex justify-end">
+                <button id="closeupdatesuccessModal"
+                    class="bg-sky-600 hover:bg-sky-700 shadow-xl border border-1 border-sky-300 text-white py-2 px-4 rounded">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="stylescript/script.js"></script>
+    <script>
+
+      
+
+
+        //Check session token on dashboard page load
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!getSessionToken()) {
+                // No valid session token, redirect to login
+                window.location = "login.html";
+            }
+        });
+
+        // Function to retrieve session token
+        const getSessionToken = () => {
+            return localStorage.getItem("sessionToken");
+        };
+
+
+        document.getElementById("logout").addEventListener("click", (event) => {
+            event.preventDefault();
+            logout();
+        });
+
+        const logout = () => {
+            // Clear the session token
+            clearSessionToken();
+            // Redirect to login page
+            window.location = "login.html";
+        };
+
+        const clearSessionToken = () => {
+            localStorage.removeItem("sessionToken");
+        };
+
+
+        
+        // JavaScript
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const menubutton = document.getElementById('menubutton');
+            const navbar = document.getElementById('navbar');
+            const closesidebar = document.getElementById('closesidebar');
+            const modalresponsive = document.getElementById('modalresponsive');
+
+            // Initially hide the sidebar and show the navbar for screen widths below 768 pixels
+
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('hidden');
+                navbar.classList.add('hidden');
+                menubutton.classList.remove('hidden');
+                modalresponsive.style.width = "8rem"
+            } else {
+                sidebar.classList.add('hidden');
+                navbar.classList.remove('hidden');
+                menubutton.classList.add('hidden');
+            }
+
+            menubutton.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden'); // Toggle the 'hidden' class on the sidebar
+            });
+            closesidebar.addEventListener('click', () => {
+                sidebar.classList.add('hidden'); // Toggle the 'hidden' class on the sidebar
+            });
+        });
+
+
+
+
+    </script>
+</body>
+
+</html>

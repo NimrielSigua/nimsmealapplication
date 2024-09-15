@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="datePicker">Select a date:</label>
+<input type="date" id="datePicker">
+
+
+</body>
+<script>
+    // Get the input element
+    const datePicker = document.getElementById('datePicker');
+
+// Get the current date
+const currentDate = new Date();
+
+// Calculate the start of the current week (Sunday) based on the selected date
+const startOfWeek = new Date(currentDate);
+startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+
+// Format the start of the week as "YYYY-MM-DD"
+const formattedStartOfWeek = startOfWeek.toISOString().split('T')[0];
+
+// Set the minimum selectable date to the start of the week
+datePicker.min = formattedStartOfWeek;
+
+</script>
+</html>

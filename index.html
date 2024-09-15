@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Meal Application</title>
+    <script src="stylescript/tailwind.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Concert+One&family=Passion+One&family=Playfair+Display:wght@500&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Croissant+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+    <script src="js/users.js" type="module" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/axios.js"></script>
+
+    <style>
+        .navigation a.active {
+            color: #7cc2ff;
+            transform: none;
+        }
+    @media (max-width: 768px) {
+        #navbar {
+            display: none;
+        }
+        #menubutton{
+            display: block;
+        }
+        #sidebar{
+            display: none;
+        }
+        #fpic{
+            display: none;
+        }
+        #pics{
+            display: flex;
+            flex-direction: column;
+        }
+        body{
+            width: screen;
+        }
+
+    }
+
+
+    </style>
+</head>
+
+<body class="bg-sky-700">
+    <nav id="navbar" class="bg-sky-100 p-2 fixed top-0 w-full z-50 shadow-md">
+        <div class="flex navigation">
+            <img src="img/logo2.png" class="rounded-[100%] hover:animate-bounce" width="50px" alt="logo">
+            <p style="font-family: 'Croissant One', cursive;" class="text-xl ml-2 mt-3">Nims Weekly Meal</p>
+            <div class="flex justify-center items-center gap-4 ml-[4rem]">
+                <a href="index.html" class="text-sky-900 hover:scale-90">Home</a>
+                <a href="wmp.html" class="text-sky-900 hover:scale-90">Weekly Meal Plan</a>
+                <a href="recipe.html" class="text-sky-900 hover:scale-90">Recipe</a>
+                <div class="text-sky-900 hover:scale-90 hover:text-red-500 ml-[50rem]">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <a href="login.html" id="logout">logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <nav id="sidebar" class="hidden p-4 fixed w-screen bg-sky-50 bg-opacity-90 shadow-lg">
+            <div class="w-full flex justify-end content-end">
+                <button id="closesidebar" class="flex justify-end items-end">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex items-center mb-4">
+                <img src="img/logo2.png" class="rounded-full h-12 w-12 hover:animate-bounce" alt="logo">
+                <p class="text-xl ml-2 mt-3 font-croissant">Nims weekly meal</p>
+            </div>
+            <ul>
+                <li class="mb-2">
+                    <a href="index.html" class="text-sky-900 hover:scale-90 block p-2">Home</a>
+                </li>
+                <li class="mb-2">
+                    <a href="wmp.html" class="text-sky-900 hover:scale-90 block p-2">Weekly Meal Plan</a>
+                </li>
+                <li class="mb-2">
+                    <a href="recipe.html" class="text-sky-900 hover:scale-90 block p-2">Recipe</a>
+                </li>
+            </ul>
+            <div class="mt-4">
+                <a href="login.html" id="logout" class="text-sky-900 hover:scale-90 hover:text-red-500 block p-2">
+                    <i class="fa-solid fa-right-to-bracket inline-block mr-2"></i>
+                    Logout
+                </a>
+            </div>
+        </nav>
+        <div class="flex">
+            <button id="menubutton" class="p-3 ">
+                <i class="fa-solid fa-bars text-3xl"></i>
+            </button>
+            <h1 class="mt-3 text-2xl font-bold">Weekly Meal Plan</h1>
+        </div>
+    </div>
+
+    <div class="w-auto p-4 mt-16">
+        <section id="home">
+            <div class="flex grid-rows-2 gap-1">
+                <div id="fpic" class="bg-sky-100 shadow-xl rounded-lg w-[30rem] p-3 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 duration-300">
+                    <img src="img/recipe_1.jpg" alt="" class="w-auto">
+                </div>
+
+                <div class="p-3 w-[55rem]">
+                    <h1 class="font-bold text-black text-3xl" style="font-family: 'Playfair Display', serif;">Weekly Meal Plan</h1>
+                    <p>Meal planning is an essential aspect of maintaining a healthy lifestyle, saving time, and
+                        reducing
+                        food waste.
+                        A weekly meal planning web application is a digital tool designed to help users efficiently plan
+                        their meals for an entire week.
+                        It offers a range of features and benefits that simplify the meal planning process and improve
+                        overall meal management. </p>
+                </div>
+            </div>
+            <div id="pics" class="mt-4 grid grid-cols-3 gap-3">
+                <div class="bg-sky-100 shadow-2xl rounded-lg w-[30rem] h-[15rem] p-3 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 duration-300">
+                    <img src="img/recipe_2.jpg" alt="" class="">
+                </div>
+                <div class="bg-sky-100 shadow-2xl rounded-lg w-[30rem] p-3 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 duration-300">
+                    <img src="img/recipe_3.jpg" alt="" class="w-auto">
+                </div>
+                <div class="bg-sky-100 shadow-2xl rounded-lg w-[30rem] h-[21rem] p-3 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 duration-300">
+                    <img src="img/recipe_4.jpg" alt="" class="w-auto">
+                </div>
+            </div>
+        </section>
+
+        <!-- <section id="about" class="mt-24">
+            <div class="">
+                <h1 class="font-bold text-3xl text-center">About Me</h1>
+                <p class="p-3 text-center flex justify-center w-[60rem] ml-[18rem]">
+                    Greetings! I'm Nimriel Sigua, a passionate and aspiring Information Technology student based in the
+                    beautiful Philippines.
+                    Currently in my third year of college,
+                    I'm on an exciting journey to explore the world of technology and make a meaningful impact as a
+                    student developer.
+                </p>
+            </div>
+
+            <div class=" flex flex-cols justify-center content-center grid-cols-3 gap-4 mt-10">
+                <div class=" bg-sky-200 shadow-xl rounded-lg w-96 p-4 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-teal-500 duration-300">
+                    <h1 class="text-center font-bold">My Background</h1>
+                    <hr>
+                    <p class="font-bold ">Name:</p><span>Nimriel Sigua</span><br>
+                    <p class="font-bold mt-3">Location:</p> <span>Cagayan De Oro City Mis. Or, Philippines</span>
+                    <p class="font-bold mt-3">Academic Pursuits:</p> <span>I'm currently pursuing a degree in Information Technology, a field that
+                            constantly evolves and inspires me to learn and create.</span>
+                </div>
+
+                <div class="bg-sky-200 shadow-xl rounded-lg w-96 p-4 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-teal-500 duration-300">
+                    <h1 class="text-center font-bold">My Journey as a Student Developer</h1>
+                    <hr>
+                    <p class="">I am proud to wear the hat of a student developer, where I transform my ideas into real, functional software solutions.</p>
+                    <p class="mt-3">I find immense joy in coding, problem-solving, and crafting innovative applications.</p>
+                    <p class="mt-3">My passion for development drives me to stay updated with the latest industry trends and technologies.</p>
+                </div>
+
+                <div class="bg-sky-200 shadow-xl rounded-lg w-96 p-4 transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 hover:bg-teal-500 duration-300">
+                    <h1 class="text-center font-bold">My Philosophy</h1>
+                    <hr>
+                    <p class="">One motto I firmly believe in is, "Dream big and surpass the limits of yours." This saying serves as a constant reminder that there are no boundaries to what we can achieve when we set our minds to it.</p>
+                    <p class="mt-3">I embrace challenges as opportunities for growth and am dedicated to pushing the boundaries of my skills and knowledge.</p>
+                </div>
+            </div>
+
+            <div class="flex justify-center content-center">
+                <p class="bg-sky-200 shadow-xl rounded-lg p-4 text-center mt-10 w-[58rem]">Feel free to join me on this journey as we explore the vast world of Information Technology, code, and innovation. Together, we can dream big, break limits, and create a brighter future through technology.</p>
+            </div>
+
+        </section> -->
+    </div>
+
+<script>
+
+        const menubutton = document.getElementById('menubutton').addEventListener("click", () =>{
+            document.getElementById('sidebar').style.display = "block";    
+        })
+        const closesidebar = document.getElementById('closesidebar').addEventListener("click", () =>{
+            document.getElementById('sidebar').style.display = "none";    
+        })
+
+
+
+</script>
+</body>
+<script>
+
+    // Initial check and event listener for window resize
+    handleNavigationVisibility();
+    window.addEventListener('resize', handleNavigationVisibility);
+</script>
+<script src="stylescript/script.js"></script>
+
+
+<!-- <script>
+    // Check session token on dashboard page load
+    document.addEventListener("DOMContentLoaded", () => {
+        if (!getSessionToken()) {
+            // No valid session token, redirect to login
+            window.location = "login.html";
+        }
+    });
+
+    // Function to retrieve session token
+    const getSessionToken = () => {
+        return localStorage.getItem("sessionToken");
+    };
+
+
+    document.getElementById("logout").addEventListener("click", (event) => {
+        event.preventDefault();
+        logout();
+    });
+
+    const logout = () => {
+        // Clear the session token
+        clearSessionToken();
+        // Redirect to login page
+        window.location = "login.html";
+    };
+
+    const clearSessionToken = () => {
+        localStorage.removeItem("sessionToken");
+    };
+</script> -->
+
+
+</html>

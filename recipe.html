@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Meal Application</title>
+    <script src="stylescript/tailwind.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/addrecipe.js" defer></script>
+    <script src="js/recipedisplay.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat&family=Francois+One&family=IBM+Plex+Serif:wght@100&family=Titan+One&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Concert+One&family=Passion+One&family=Playfair+Display:wght@500&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Croissant+One&display=swap" rel="stylesheet">
+    <script src="js/axios.js"></script>
+    <style>
+        .navigation a.active {
+            color: #7cc2ff;
+            transform: none;
+        }
+
+        .text-scroll-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .text-scroll-thin::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 5px;
+        }
+
+        .text-scroll-thin::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body class="bg-sky-700">
+    <nav id="navbar" class="bg-sky-100 p-2 fixed top-0 w-full z-50 shadow-md">
+        <div class="flex navigation">
+            <img src="img/logo2.png" class="rounded-[100%] hover:animate-bounce" width="50px" alt="logo">
+            <p style="font-family: 'Croissant One', cursive;" class="text-xl ml-2 mt-3">Nims Weekly Meal</p>
+            <div class="flex justify-center items-center gap-4 ml-[4rem]">
+                <a href="index.html" class="text-sky-900 hover:scale-90">Home</a>
+                <a href="wmp.html" class="text-sky-900 hover:scale-90">Weekly Meal Plan</a>
+                <a href="recipe.html" class="text-sky-900 hover:scale-90">Recipe</a>
+                <div class="text-sky-900 hover:scale-90 hover:text-red-500 ml-[50rem]">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <a href="login.html" id="logout">logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <nav id="sidebar" class="p-4 fixed bg-sky-50 bg-opacity-90 w-screen shadow-lg">
+            <div class="w-full flex justify-end content-end">
+                <button id="closesidebar" class="flex justify-end items-end">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex items-center mb-4">
+                <img src="img/logo2.png" class="rounded-full h-12 w-12 hover:animate-bounce" alt="logo">
+                <p class="text-xl ml-2 mt-3 font-croissant">Nims weekly meal</p>
+            </div>
+            <ul>
+                <li class="mb-2">
+                    <a href="index.html" class="text-sky-900 hover:scale-90 block p-2">Home</a>
+                </li>
+                <li class="mb-2">
+                    <a href="wmp.html" class="text-sky-900 hover:scale-90 block p-2">Weekly Meal Plan</a>
+                </li>
+                <li class="mb-2">
+                    <a href="recipe.html" class="text-sky-900 hover:scale-90 block p-2">Recipe</a>
+                </li>
+            </ul>
+            <div class="mt-4">
+                <a href="login.html" id="logout" class="text-sky-900 hover:scale-90 hover:text-red-500 block p-2">
+                    <i class="fa-solid fa-right-to-bracket inline-block mr-2"></i>
+                    Logout
+                </a>
+            </div>
+        </nav>
+        <div class="flex">
+            <button id="menubutton" class="p-3 ">
+                <i class="fa-solid fa-bars text-3xl"></i>
+            </button>
+            <h1 class="mt-3 text-2xl font-bold">Weekly Meal Plan</h1>
+        </div>
+    </div>
+    <div class="mx-auto p-6 overflow-hidden">
+
+        <section class="py-10 mt-9 ml-[-10px] p-1 text-center gap-3 flex">
+            <div class="absolute mt-[-3rem]">
+                <button id="showrecipeBtn">
+                    <i class="fa-solid fa-right-left bg-blue-500 p-2 rounded-lg"></i>
+                </button>
+            </div>
+            <div id="recipeShow" class="">
+                <div class="mb-2 flex justify-center">
+                    <button id="addrecipe" onclick="Addrecipe()"
+                        class="bg-sky-500 hover:bg-sky-600 text-white p-1 rounded hover:scale-105 w-[150%]">
+                        <i class="fa-solid fa-plus"></i>
+                        Add
+                    </button>
+                </div>
+                <div
+                    class="border absolute border-2 border-sky-300 rounded-lg overflow-hidden shadow-[10px_20px_60px_-15px_rgba(0,0,0,0.5)]">
+                    <div
+                        class="bg-white shadow relative max-w-[15rem] max-h-[35rem] w-full sm:rounded-lg text-start overflow-y-auto">
+                        <div id="recipeTable">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="bg-sky-50 p-2 w-[100%] h-[38rem] rounded-lg bg-opacity-70 border border-1 border-sky-300 overflow-hidden overflow-scroll">
+                <div class="" id="recipeTableall"></div>
+            </div>
+        </section>
+
+
+
+
+    </div>
+    <!-- Add Meal Modal -->
+    <div id="recipeModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden">
+        <div class="justify-center h-screen flex items-center content-center">
+            <div class="flex items-center justify-center w-full h-full">
+                <div class="bg-sky-800 border  border-2 border-sky-500 p-8 rounded-lg shadow-lg relative">
+                    <button id="closeModal" onclick="closeModal()"
+                        class="absolute top-2 right-2 w-10 bg-gray-500 hover:bg-red-600 text-white p-1 rounded">
+                        <h1>X</h1>
+                    </button>
+                    <!-- Form Content -->
+                    <h2 class="text-xl font-semibold mb-2 text-center text-sky-50">Add Recipe</h2>
+                    <hr>
+                    <br>
+                    <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg">
+                        <div class="mb-4">
+                            <label for="recipeName" class="block font-medium">Recipe Name:</label>
+                            <input type="text" id="recipeName" name="recipeName" required
+                                class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                        </div>
+                        <div class="flex space-x-4">
+                            <div class="mb-4">
+                                <label for="description" class="block font-medium">Description:</label>
+                                <textarea id="description" name="description" rows="4" required
+                                    class="border border-sky-300 text-left w-full mt-1 p-2 border rounded"></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="cookingInstructions" class="block font-medium">Cooking Instructions:</label>
+                                <textarea id="cookingInstructions" name="cookingInstructions" rows="4" required
+                                    class="border border-sky-300 text-left w-full mt-1 p-2 border rounded"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-4">
+                            <div class="w-1/2">
+                                <label for="prepTime" class="block font-medium">Prep Time (minutes):</label>
+                                <input type="number" id="prepTime" name="prepTime" required
+                                    class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                            </div>
+
+                            <div class="w-1/2">
+                                <label for="cookingTime" class="block font-medium">Cooking Time (minutes):</label>
+                                <input type="number" id="cookingTime" name="cookingTime" required
+                                    class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                            </div>
+                        </div>
+                        <div class="max-h-32 overflow-hidden overflow-y-scroll">
+                            <div id="ingredients">
+
+                            </div>
+                        </div>
+
+                        <button type="button" id="addIngredient"
+                            class="mt-2 p-1 bg-blue-500 text-white rounded hover:bg-blue-600">Add Ingredient</button>
+
+                        <button type="submit" id="savetwo"
+                            class="mt-4 p-2 bg-green-500 text-white rounded hover:bg-green-600">Submit Recipe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden">
+        <div class="bg-sky-400 bg-opacity-90 border border-2 border-sky-300 p-4 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold mb-4">Success!</h2>
+            <hr>
+            <p class="mt-3 text-md">Recipe saved successfully.</p>
+            <div class="mt-4 flex justify-end">
+                <button id="closeSuccessModal"
+                    class="bg-sky-600 hover:bg-sky-700 shadow-xl border border-1 border-sky-300 text-white py-2 px-4 rounded">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit Modal -->
+    <div id="editRecipeModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden">
+        <div class="justify-center h-screen flex items-center content-center">
+            <div class="flex items-center justify-center">
+                <div id="Editmodal" class="bg-sky-800 border border-2 border-sky-500 p-8 rounded-lg shadow-lg relative">
+                    <div class="flex justify-end content-end">
+                    <button id="closeEditModal" onclick="closeEditModal()"
+                        class=" top-2 right-2 w-10 bg-gray-500 hover:bg-red-600 text-white p-1 rounded">
+                        <h1>X</h1>
+                    </button>
+                </div>
+                    <!-- Form Content -->
+                    <h2 class="text-xl font-semibold mb-2 text-center text-sky-50">Edit Recipe</h2>
+                    <hr>
+                    <br>
+                    <div class="bg-sky-200 bg-opacity-70 p-3 border border-sky-950 rounded-lg">
+                        <div class="mb-4">
+                            <input type="text" id="editRecipeId" name="editRecipeId" required
+                                class="border border-sky-300 w-full mt-1 p-2 border hidden rounded">
+                        </div>
+                        <div class="mb-4">
+                            <label for="editRecipeName" class="block font-medium">Recipe Name:</label>
+                            <input type="text" id="editRecipeName" name="editRecipeName" required
+                                class="border border-sky-300 w-full sm:w-48 mt-1 p-2 border rounded">
+                        </div>
+                        <div class=" flex gap-4">
+                            <div class="mb-4 ">
+                                <label for="editDescription" class="block font-medium">Description:</label>
+                                <textarea id="editDescription" name="editDescription" rows="4" cols="30" required
+                                    class="border border-sky-300 text-left w-full mt-1 p-2 border rounded"></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="editCookingInstructions" class="block font-medium">Cooking
+                                    Instructions:</label>
+                                <textarea id="editCookingInstructions" name="editCookingInstructions" rows="4" cols="30"
+                                    required
+                                    class="border border-sky-300 w-full text-left mt-1 p-2 border rounded"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-4">
+                            <div class="w-1/2">
+                                <label for="editPrepTime" class="block font-medium">Prep Time (minutes):</label>
+                                <input type="number" id="editPrepTime" name="editPrepTime" required
+                                    class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                            </div>
+                            <div class="w-1/2">
+                                <label for="editCookingTime" class="block font-medium">Cooking Time (minutes):</label>
+                                <input type="number" id="editCookingTime" name="editCookingTime" required
+                                    class="border border-sky-300 w-full mt-1 p-2 border rounded">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="max-h-32"></label>
+                            <div id="editIngredientsContainer" class="max-h-32 overflow-hidden overflow-y-scroll">
+                            </div>
+                        </div>
+                        <button type="button" id="editAddIngredient"
+                            class="mt-2 p-1 bg-blue-500 text-white rounded hover:bg-blue-600">Add Ingredient</button>
+                        <button type="submit" id="editSave"
+                            class="mt-4 p-2 bg-green-500 text-white rounded hover:bg-green-600">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script src="stylescript/script.js"></script>
+    <script>
+        function Addrecipe() {
+            document.getElementById("recipeModal").style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById("recipeModal").style.display = 'none';
+        }
+        function closeEditModal() {
+            document.getElementById("editRecipeModal").classList.add("hidden")
+        }
+
+        // JavaScript to dynamically add ingredient fields
+        let ingredientCount = 1;
+        const ingredientsContainer = document.getElementById("ingredients");
+        const addIngredientButton = document.getElementById("addIngredient");
+
+        // Function to create a new ingredient row
+        function createIngredientRow() {
+            ingredientCount++;
+
+            const newIngredient = document.createElement("div");
+            newIngredient.className = "ingredient";
+            newIngredient.innerHTML = `
+                <label for="ingredient${ingredientCount}">Ingredient:</label>
+                <input type="text" id="ingredient${ingredientCount}" name="ingredients" required class="w-24 mt-1 p-2 border rounded"></input>
+                    
+                <label for="quantity${ingredientCount}">Quantity:</label>
+                <input type="text" id="quantity${ingredientCount}" name="quantities" class="w-24 mt-1 p-2 border rounded ingredient-quantity" required>
+                    
+                <label for="price${ingredientCount}">Price:</label>
+                <input type="text" id="price${ingredientCount}" name="price" class="w-24 mt-1 p-2 border rounded ingredient-price" required>
+                <button type="button" class="mt-2 font-semibold text-stone-500 hover:scale-75 hover:text-orange-800 w-10 rounded deleteIngredient">X</button>
+              `;
+            ingredientsContainer.appendChild(newIngredient);
+        }
+
+        addIngredientButton.addEventListener("click", createIngredientRow);
+
+        document.addEventListener("click", (event) => {
+            if (event.target && event.target.classList.contains("deleteIngredient")) {
+                event.target.parentNode.remove();
+            }
+        });
+
+
+
+        //         let editIngredientCount = 1;
+        // const editIngredientsContainer = document.getElementById("editIngredient");
+        // const editAddIngredientButton = document.getElementById("editAddIngredient");
+
+        // // Function to create a new ingredient row in the edit modal
+        // function createEditIngredientRow() {
+        //     editIngredientCount++;
+
+        //     const newEditIngredient = document.createElement("div");
+        //     newEditIngredient.className = "ingredient";
+        //     newEditIngredient.innerHTML = `
+        //         <label for="editIngredient${editIngredientCount}">Ingredient:</label>
+        //         <input type="text" id="editIngredient${editIngredientCount}" name="editIngredients" required class="w-24 mt-1 p-2 border rounded"></input>
+
+        //         <label for="editQuantity${editIngredientCount}">Quantity:</label>
+        //         <input type="text" id="editQuantity${editIngredientCount}" name="editQuantities" class="w-24 mt-1 p-2 border rounded ingredient-quantity" required>
+
+        //         <label for="editPrice${editIngredientCount}">Price:</label>
+        //         <input type="text" id="editPrice${editIngredientCount}" name="editPrice" class="w-24 mt-1 p-2 border rounded ingredient-price" required>
+        //         <button type="button" class="mt-2 font-semibold text-stone-500 hover:scale-75 hover:text-orange-800 w-10 rounded deleteEditIngredient">X</button>
+        //     `;
+        //     editIngredientsContainer.appendChild(newEditIngredient);
+        // }
+
+        // editAddIngredientButton.addEventListener("click", createEditIngredientRow);
+
+        // document.addEventListener("click", (event) => {
+        //     if (event.target && event.target.classList.contains("deleteEditIngredient")) {
+        //         event.target.parentNode.remove();
+        //     }
+        // });
+
+
+
+        // Check session token on dashboard page load
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!getSessionToken()) {
+                // No valid session token, redirect to login
+                window.location = "login.html";
+            }
+        });
+
+        // Function to retrieve session token
+        const getSessionToken = () => {
+            return localStorage.getItem("sessionToken");
+        };
+
+
+        document.getElementById("logout").addEventListener("click", (event) => {
+            event.preventDefault();
+            logout();
+        });
+
+        const logout = () => {
+            // Clear the session token
+            clearSessionToken();
+            // Redirect to login page
+            window.location = "login.html";
+        };
+
+        const clearSessionToken = () => {
+            localStorage.removeItem("sessionToken");
+        };
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const menubutton = document.getElementById('menubutton');
+            const navbar = document.getElementById('navbar');
+            const closesidebar = document.getElementById('closesidebar');
+            const modalresponsive = document.getElementById('modalresponsive');
+            const recipeShow = document.getElementById('recipeShow');
+            const showrecipeBtn = document.getElementById('showrecipeBtn');
+
+            // Initially hide the sidebar and show the navbar for screen widths below 768 pixels
+
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('hidden');
+                recipeShow.classList.add('hidden');
+                navbar.classList.add('hidden');
+                menubutton.classList.remove('hidden');
+                showrecipeBtn.classList.remove('hidden');
+                modalresponsive.style.width = "8rem";
+                Editmodal.style.width = "3rem";
+            } else {
+                sidebar.classList.add('hidden');
+                navbar.classList.remove('hidden');
+                menubutton.classList.add('hidden');
+                recipeShow.classList.remove('hidden');
+                showrecipeBtn.classList.add('hidden');
+            }
+
+
+        });
+
+        document.getElementById('menubutton').addEventListener('click', () => {
+                sidebar.classList.toggle('hidden'); // Toggle the 'hidden' class on the sidebar
+                document.getElementById('showrecipeBtn').classList.add('hidden'); // Toggle the 'hidden' class on the sidebar
+            });
+            document.getElementById('closesidebar').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.add('hidden');
+                document.getElementById('showrecipeBtn').classList.toggle('hidden');  // Toggle the 'hidden' class on the sidebar
+            });
+
+
+        document.getElementById('showrecipeBtn').addEventListener('click', () => {
+            const recipeShow = document.getElementById('recipeShow');
+            if (recipeShow.classList.contains('hidden')) {
+                recipeShow.classList.remove('hidden');
+            } else {
+                recipeShow.classList.add('hidden');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+
+        const Editmodal = document.getElementById('Editmodal');
+
+        if (window.innerWidth <= 768) {
+                Editmodal.style.width = "29rem";
+        }
+    });
+    </script>
+</body>
+
+</html>
