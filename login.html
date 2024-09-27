@@ -32,10 +32,10 @@
         }
 
         @media (max-width: 768px) {
-        #parent-logform{
-            display: flex;
+            #parent-logform {
+                display: flex;
+            }
         }
-    }
 
         @keyframes flip {
             0% {
@@ -62,24 +62,24 @@
         };
 
         const getLocalServerUrl = async () => {
-    try {
-        const response = await fetch('./api/server_ip.php');
-        if (!response.ok) {
-            throw new Error('Failed to retrieve local server IP address');
+            try {
+                const response = await fetch('./api/server_ip.php');
+                if (!response.ok) {
+                    throw new Error('Failed to retrieve local server IP address');
+                }
+
+                const data = await response.json();
+                const localServerIP = data.localServerIP;
+                const apiPath = "/weeklymealapplication/api/login.php";
+                if (localServerIP)
+                    return `http://${localServerIP}${apiPath}`;
+            } catch (error) {
+                console.error(error);
+                return '';
+            }
         }
 
-        const data = await response.json();
-        const localServerIP = data.localServerIP;
-        const apiPath = "/weeklymealapplication/api/login.php";
-        if(localServerIP)
-        return `http://${localServerIP}${apiPath}`;
-    } catch (error) {
-        console.error(error);
-        return ''; 
-    }
-}
-
-        const login = async() => {
+        const login = async () => {
             const url = await getLocalServerUrl();
 
             const username = document.getElementById("username").value;
@@ -121,11 +121,12 @@
 
     <!-- Login -->
     <div class="flex justify-center items-center h-screen">
-        <div id="parent-logform" class="bg-sky-400 shadow-md border border-1 border-blue-500 flex rounded-md overflow-hidden">
+        <div id="parent-logform"
+            class="bg-sky-400 shadow-md border border-1 border-blue-500 flex rounded-md overflow-hidden">
             <div class="bg-sky-950">
                 <img src="img/logo_dark.png" class="flip-animation ml-11 mt-4" width="150px" alt="">
                 <h1 class="stroke text-2xl items-center flex font-[500] p-2 w-60 text-center"
-                    style="font-family: 'Croissant One', cursive;">WEEKLY MEAL PLANNER</h1>
+                    style="font-family: 'Croissant One', cursive;">VENZ</h1>
             </div>
             <div class="p-3 ">
                 <p class="text-center font-bold text-amber-900 text-xl">Login Form</p>
@@ -153,7 +154,7 @@
     <div class="modal fade " id="blankModal" role="modal">
         <div class="modal-dialog">
             <div class="modal-content border border-1 border-blue-500">
-                <div class="modal-header text-white bg-sky-950" >
+                <div class="modal-header text-white bg-sky-950">
                     <h5 class="modal-title" id="blankModalTitle">Blank Modal Title</h5>
                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
@@ -168,7 +169,7 @@
                         <div class="col col-sm-12" id="blankModalFooterDiv">Footer Div</div>
                     </div>
                 </div>
-                <div class="modal-footer bg-sky-950" id="blankModalFooterDiv2" >
+                <div class="modal-footer bg-sky-950" id="blankModalFooterDiv2">
                     <button type="button" class="btn btn-danger " data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
